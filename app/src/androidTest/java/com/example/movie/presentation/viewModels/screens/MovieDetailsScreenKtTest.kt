@@ -11,6 +11,7 @@ import com.example.movie.MainActivity
 import com.example.movie.ui.screens.movies.list.MovieListViewModel
 import com.invia.data.repository.MockMoviesRepository
 import com.invia.data.useCases.GetMoviesUseCaseImpl
+import com.invia.data.useCases.MovieDeleteUseCaseImpl
 import com.invia.domain.datasource.database.entities.Movie
 import org.junit.Before
 import org.junit.Rule
@@ -30,7 +31,13 @@ class MovieDetailsScreenKtTest {
         data.add(Movie(id = 1, name = "Movie 1", image = null, language = null))
         data.add(Movie(id = 2, name = "Movie 2", image = null, language = null))
         data.add(Movie(id = 3, name = "Movie 3", image = null, language = null))
-        movieListViewModel = MovieListViewModel(GetMoviesUseCaseImpl(MockMoviesRepository(mockData = data)))
+
+        val getMoviesUseCase = GetMoviesUseCaseImpl(MockMoviesRepository(mockData = data))
+        val deleteMovieUseCase = MovieDeleteUseCaseImpl(MockMoviesRepository(mockData = data))
+
+        movieListViewModel = MovieListViewModel(
+            getMoviesUseCase, deleteMovieUseCase
+        )
     }
 
     @Test

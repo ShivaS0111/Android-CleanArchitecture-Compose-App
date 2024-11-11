@@ -95,69 +95,17 @@ class ChangeTextBehaviorTest {
 
     @Test
     fun showMoviesList(){
-        // Wait for the AppScreen composable to be drawn on the screen. We do this waiting because some apps
-        /*// startup with a splash screen not the composable:
-        mDevice.wait(Until.hasObject(By.res("column" )), 5_000)
-
-        // Enter the name into the inputTextField
-        val inputTextField = mDevice.findObject(By.res("inputTextField"))
-        inputTextField.text = "John Cena"
-
-        // Press the button
-        val button = mDevice.findObject(By.res("button"))
-        button.click()
-
-        // Verify that the out put is the expected out put:
-        val outputTextField = mDevice.findObject(By.res("outputTextField"))
-        val result = outputTextField.text
-
-        assertEquals("Welcome, John Cena!", result)*/
 
         val loadingText: UiObject = mDevice.findObject(
             UiSelector().resourceId("progress")
         )
         assertTrue(loadingText.waitUntilGone(10000))
 
-
-        // Check the result text
         val resultText: UiObject = mDevice.findObject(UiSelector().description("ResultText"))
         val result = resultText.text
         assertEquals("Expected API data", result)
 
 
-    }
-
-    @Test
-    fun testChangeText_sameActivity() {
-        // Type text and then press the button.
-        mDevice.findObject(By.res(BASIC_SAMPLE_PACKAGE, "editTextUserInput"))
-            .setText(STRING_TO_BE_TYPED)
-        mDevice.findObject(By.res(BASIC_SAMPLE_PACKAGE, "changeTextBt"))
-            .click()
-
-        // Verify the test is displayed in the Ui
-        val changedText: UiObject2 = mDevice
-            .wait(
-                Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "textToBeChanged")),
-                500 /* wait 500ms */
-            )
-        assertThat(changedText.text, `is`(equalTo(STRING_TO_BE_TYPED)))
-    }
-
-    @Test
-    fun testChangeText_newActivity() {
-        // Type text and then press the button.
-        mDevice.findObject(By.res(BASIC_SAMPLE_PACKAGE, "editTextUserInput"))
-            .setText(STRING_TO_BE_TYPED)
-        mDevice.findObject(By.res(BASIC_SAMPLE_PACKAGE, "activityChangeTextBtn"))
-            .click()
-
-        // Verify the test is displayed in the Ui
-        val changedText: UiObject2 = mDevice.wait(
-                Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "show_text_view")),
-                500 /* wait 500ms */
-            )
-        assertThat(changedText.text, `is`(equalTo(STRING_TO_BE_TYPED)))
     }
 
     private val launcherPackageName: String
@@ -179,7 +127,7 @@ class ChangeTextBehaviorTest {
 
     companion object {
         private const val BASIC_SAMPLE_PACKAGE =
-            "com.example.test_movie_app"
+            "com.example.movie"
 
         private const val LAUNCH_TIMEOUT = 5000
 

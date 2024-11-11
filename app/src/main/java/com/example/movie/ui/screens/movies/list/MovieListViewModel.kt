@@ -19,7 +19,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(val useCase: GetMoviesUseCase, private val deleteUseCase: MovieDeleteUseCase) : ViewModel() {
+class MovieListViewModel @Inject constructor(val useCase: GetMoviesUseCase,
+                                             private val deleteUseCase: MovieDeleteUseCase) : ViewModel() {
 
     private val _toastEventFlow = MutableSharedFlow<String>(replay = 1)
     val toastEventFlow: SharedFlow<String> = _toastEventFlow
