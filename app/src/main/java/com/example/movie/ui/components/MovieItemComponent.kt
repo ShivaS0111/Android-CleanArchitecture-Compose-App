@@ -70,6 +70,7 @@ fun MovieItem(
                             .wrapContentHeight()
                             .aspectRatio(matchHeightConstraintsFirst = false, ratio = 0.68f)
                             .testTag(movie.id?.toString() ?: "lwlkd")
+                            .testTag("ShowItem")
                             .then((painter as? AsyncImagePainter)?.let { it.state as? AsyncImagePainter.State.Success }?.painter?.intrinsicSize?.let { intrinsicSize ->
                                 Modifier.aspectRatio(intrinsicSize.width / intrinsicSize.height)
                             } ?: Modifier),

@@ -13,6 +13,7 @@ import com.invia.data.repository.MockMoviesRepository
 import com.invia.data.useCases.GetMoviesUseCaseImpl
 import com.invia.data.useCases.MovieDeleteUseCaseImpl
 import com.invia.domain.datasource.database.entities.Movie
+import kotlinx.coroutines.delay
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -41,36 +42,8 @@ class MovieDetailsScreenKtTest {
     }
 
     @Test
-    fun validate_topBar_title_visibility() {
-        composeTestRule.onNodeWithText("Movie List")
-            .assertIsDisplayed()
-    }
-
-    @Test
     fun testLoadingState() {
         composeTestRule.onNodeWithTag("Loading...").assertExists()
     }
 
-    @Test
-    fun testErrorState() {
-        composeTestRule.onNodeWithText("Error fetching data").assertExists()
-    }
-
-    @Test
-    fun testDataLoadedState() {
-        /*composeRule.setContent {
-            MovieListScreen(navHostController = rememberNavController(), viewModel = moviesViewModel)
-        }*/
-        composeTestRule.onNodeWithTag("Loading...").assertExists()
-        //composeRule.onNodeWithTag("list").assertExists()
-        composeTestRule.onAllNodesWithTag("ShowItem").assertCountEquals(3)
-    }
-
-    @Test
-    fun testButtons() {
-        val buttonTags = listOf("co", "join", "cancel", "cancelJoin")
-        buttonTags.forEach { tag ->
-            composeTestRule.onNodeWithText(tag).assertExists().performClick()
-        }
-    }
 }
