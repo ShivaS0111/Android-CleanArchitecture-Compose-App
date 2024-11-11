@@ -8,9 +8,18 @@ import com.invia.domain.common.Result
 import com.invia.domain.datasource.database.entities.Movie
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.mockk
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +28,6 @@ import org.junit.Test
 class MovieDetailsViewModelTest {
 
     private lateinit var viewModel: MovieListViewModel
-    private lateinit var repository: MoviesRepositoryImpl
 
     private val data: List<Movie> by lazy {
         arrayListOf(
@@ -29,37 +37,57 @@ class MovieDetailsViewModelTest {
         )
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
+
     @Before
     fun setUp() {
-        val getMoviesUseCase = GetMoviesUseCaseImpl(MockMoviesRepository(mockData = data))
-        val deleteMovieUseCase = MovieDeleteUseCaseImpl(MockMoviesRepository(mockData = data))
-
+        Dispatchers.setMain(StandardTestDispatcher())
         viewModel = MovieListViewModel(
-            getMoviesUseCase, deleteMovieUseCase
+            mockk(), mockk()
         )
     }
 
     @Test
-    fun `getAllTvShows emits`() {
+    fun `getAllTvShows emits`() = runTest {
+
+        coEvery { viewModel.useCase.data } returns flow {
+            emit(emptyList())
+        }
+
         coEvery { viewModel.useCase.invoke() } returns  flow {
             emit(Result.Success(data))
         }
 
         viewModel.getAllTvShows()
-        coVerify {
-            viewModel.useCase.invoke()
-        }
+        advanceUntilIdle()
+        println(viewModel.useCase.data.first())
+        println(viewModel.response.value.data?.first())
+        val respData =viewModel.response.value.data;
+        assertEquals(data, respData)
     }
 
     @Test
-    fun `getAllTvShows emits loading and error states`() = runTest {
+    fun `getAllTvShows emits error states`() = runTest {
+
+        coEvery { viewModel.useCase.data } returns flow {
+            emit(emptyList())
+        }
+
         val errorMessage = "Network error"
         coEvery { viewModel.useCase.invoke() } returns flow {
             emit(Result.Error(errorMessage))
         }
-        viewModel.useCase.invoke()
+        viewModel.getAllTvShows()
+        advanceUntilIdle()
 
-        Assert.assertEquals(errorMessage, viewModel.response.value.error)
+        println(viewModel.useCase.data.first())
+        println(viewModel.response.value.error)
+        assert(viewModel.response.value.error != null)
+
+        assert(errorMessage == viewModel.response.value.error)
     }
 
 }
