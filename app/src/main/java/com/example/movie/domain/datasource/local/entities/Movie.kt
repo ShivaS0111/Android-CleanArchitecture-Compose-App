@@ -10,7 +10,7 @@ data class Movie(
     @PrimaryKey
     val id: Int?,
 
-    @SerializedName("Image")
+    @SerializedName("image")
     val image: ImageData?,
 
     @SerializedName("language")

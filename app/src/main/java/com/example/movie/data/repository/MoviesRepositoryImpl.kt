@@ -23,7 +23,7 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun getTvShows(): Flow<Result<List<Movie>>> = channelFlow {
         async {
             val data = getTvShowsFromLocal().first()
-            if (data.isEmpty()) {
+            if (data.isNotEmpty()) {
                 send(Result.Success(data))
             }
         }
