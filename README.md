@@ -9,7 +9,7 @@ The project structure is designed to ensure each layer has a clear role:
 - **domain**: Defines abstract implementations of core functionalities.
 - **data**: Implements the `domain` layer interfaces and provides data management logic.
 - **ui**: Contains all UI-related components, navigation, and screen-related ViewModels.
-- **di**: Handles Dependency Injection to manage dependencies between layers.
+- **core**: Contains core utilities and dependency injection setup.
 
 ---
 
@@ -19,29 +19,19 @@ The `domain` layer is the core of the application. It contains abstract implemen
 
 #### Folders
 
-- **common**
-    - `Result`: A utility class for handling success and error states consistently throughout the app.
 - **datasource**
     - **local**
-        - **dao**: Defines the database access objects (DAO) required by the local data source.
-            - `MovieDAO`: Interface for local database operations specific to movies.
-        - **entities**: Contains the data entities representing the database tables.
-            - `Movie`: Represents a movie entity in the local database.
-        - **util**: Provides utilities and converters for the local database.
-            - `RoomDataTypeConverters`: Custom type converters for the Room database.
-        - `AppDatabase.kt`: Sets up the Room database for the application.
         - `MoviesLocalDataSource`: Abstract interface for local data access methods.
     - **network**
-        - **datasource**
-            - `BaseNetworkDatasource.kt`: Base class to handle common network-related functionalities.
-            - `MoviesNetworkDataSource`: Abstract interface for fetching data from remote sources.
-        - `ApiService`: Defines the API endpoints and related methods for network operations.
-        - `MoviesDataSource`: General abstraction for data sources (both local and network).
+        - `MoviesNetworkDataSource`: Abstract interface for fetching data from remote sources.
 - **model**
     - `ImageData`: Represents image data associated with movies.
+    - `Movie`: Represents Movie data associated with movies.
 - **repository**
     - `MoviesRepository`: Abstract interface that serves as the main contract for data access. It provides the necessary methods to retrieve movie data from different sources.
 
+- **usecases**
+  - Contains the business logics of domain
 ---
 
 ### 2. `data` Layer
@@ -52,13 +42,22 @@ The `data` layer contains implementations of the abstractions defined in the `do
 
 - **datasource**
     - **local**: Implements the local data source functionalities using Room and other local storage options.
+        - local
+          - **dao**: Defines the database access objects (DAO) required by the local data source.
+            - `MovieDAO`: Interface for local database operations specific to movies.
+          - **entities**: Contains the data entities representing the database tables.
+            - `MovieEntity`: Represents a movie entity in the local database.
+          - **dbclient**
+            - `AppDatabase.kt`: Sets up the Room database for the application.
         - `MoviesLocalDataSourceImpl`: Concrete implementation of `MoviesLocalDataSource`.
     - **network**
         - **apiclient**: Contains network client implementations.
             - `ApiServiceImpl`: Implementation of the `ApiService` interface for network operations.
-            - `MoviesNetworkDataSourceImpl`: Concrete implementation of `MoviesNetworkDataSource`, fetching data from APIs.
+        - `MoviesNetworkDataSourceImpl`: Concrete implementation of `MoviesNetworkDataSource`, fetching data from APIs.
+- **mapper**
+  - `MovieMapper`: Maps data entities to domain models and vice versa.
 - **repository**
-    - `MoviesRepositoryImpl.kt`: Implements `MoviesRepository` interface and integrates data from both local and remote sources to provide a single source of truth.
+  - `MoviesRepositoryImpl.kt`: Implements `MoviesRepository` interface and integrates data from both local and remote sources to provide a single source of truth.
 
 ---
 
@@ -82,8 +81,6 @@ The `ui` layer is responsible for the application's user interface, including al
     - **list**: Components and ViewModels for the movie list screen.
         - `MoveListScreen.kt`: UI for displaying a list of movies.
         - `MovieListViewModel`: Manages UI-related data for the list screen.
-- **stateHolders**
-    - `StateHolder`: Holds and manages UI state across multiple components.
 - **theme**
     - `Color.kt`: Defines the color palette used in the app.
     - `Theme.kt`: Configures the app's theme settings.
@@ -92,11 +89,21 @@ The `ui` layer is responsible for the application's user interface, including al
 
 ---
 
-### 4. `di` (Dependency Injection) Module
+### 4. `core` Layer
+The `core` contains core utilities and dependency injection setup.
 
+- **di**
 The `di` module is a project-level folder that configures Dependency Injection using Dagger or Hilt (or another DI library). It provides a single source for initializing dependencies, enabling easy swapping of implementations and enhancing testability.
-
 This module ensures that dependencies are injected into components across all layers, including `data`, `domain`, and `ui`, following the Clean Architecture guidelines.
+  - `DatabaseModule`: Provides Room database and DAO instances.
+  - `DataModule`: Sets up the repository and data source bindings.
+  - `NetworkModule`: Configures and provides network-related dependencies like Retrofit.
+  
+- **util**
+  - `BaseNetworkDatasource`.kt: A base class to handle common network data source logic.
+  - `Result`: A utility class to encapsulate success and error outcomes.
+  - `RoomDataTypeConverters`: Provides type converters for Room database.
+  - `UIStateHolder`: Manages UI states such as loading, success, and error.
 
 ---
 
