@@ -16,5 +16,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "LlyodsExercise"
 include(":app")
-include(":domain")
-include(":data")

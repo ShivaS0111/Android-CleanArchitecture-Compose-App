@@ -2,8 +2,8 @@ package com.example.movie.di
 
 import android.content.Context
 import androidx.room.Room
-import com.invia.domain.datasource.database.AppDatabase
-import com.invia.domain.datasource.database.dao.MovieDAO
+import com.example.movie.domain.datasource.local.AppDatabase
+import com.example.movie.domain.datasource.local.dao.MovieDAO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +21,6 @@ class DatabaseModule {
     ).build()
 
     @Provides
-    fun provideMoviesDAO( db:AppDatabase):MovieDAO = db.moviesDAO()
+    fun provideMoviesDAO( db:AppDatabase): MovieDAO = db.moviesDAO()
 
 }

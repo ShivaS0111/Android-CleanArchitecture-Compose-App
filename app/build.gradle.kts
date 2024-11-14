@@ -101,25 +101,16 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     implementation("androidx.test.ext:junit-ktx:1.2.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose-android:2.8.4")
-    kapt ("com.google.dagger:hilt-compiler:2.51.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("androidx.compose.ui:ui-test-junit4-android:1.7.5")
+    kapt ("com.google.dagger:hilt-compiler:2.51.1")
     //coil
     implementation("io.coil-kt:coil-compose:2.4.0")
 
     //nav graph
     val nav_version = "2.7.7"
     api("androidx.navigation:navigation-fragment-ktx:$nav_version")
-
-    implementation( project(":domain"))
-    implementation( project(":data"))
-
-    //implementation ("com.canopas.editor:rich-editor-compose:0.1.0")
-    //implementation("com.halilibo.compose-richtext:richtext-ui:1.0.0-alpha01")
-    //implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc05")
-
-        //implementation ("com.darkrockstudios:richtexteditor-android:1.5.0")
 
     val colorPicker = "0.7.0"
     implementation ("com.godaddy.android.colorpicker:compose-color-picker:$colorPicker")
@@ -156,8 +147,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.8.0")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0-RC")
 
-    //testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
-
     testImplementation ("org.mockito:mockito-core:5.8.0")
 
     // For Robolectric tests.
@@ -172,5 +161,17 @@ dependencies {
     //androidTestAnnotationProcessor("com.google.dagger:hilt-android-compiler:2.51.1")
 
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
+
+    val room_version = "2.6.1"
+
+    api("androidx.room:room-runtime:$room_version")
+    api( "androidx.room:room-ktx:2.6.1")
+
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+    //room testing
+    androidTestImplementation ("androidx.room:room-testing:$room_version")
 
 }

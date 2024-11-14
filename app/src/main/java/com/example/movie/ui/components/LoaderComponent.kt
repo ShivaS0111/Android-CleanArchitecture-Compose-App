@@ -23,7 +23,7 @@ fun LoaderComponent() {
             color = Color.Blue,
             modifier = Modifier
                 .size(36.dp)
-                .testTag("Loading...")
+                .testTag("loader")
         )
     }
 }

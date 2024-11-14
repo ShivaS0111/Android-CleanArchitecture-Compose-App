@@ -1,7 +1,7 @@
 package com.example.movie.di
 
-import com.invia.data.datasource.network.ApiServiceImpl
-import com.invia.domain.datasource.network.ApiService
+import com.example.movie.data.datasource.network.apiclient.ApiServiceImpl
+import com.example.movie.domain.datasource.network.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
