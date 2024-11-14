@@ -16,22 +16,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import coil.ImageLoader
 import coil.compose.AsyncImagePainter
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
-import com.example.movie.domain.datasource.local.entities.Movie
 import com.example.movie.ui.components.LoaderComponent
-import com.example.movie.ui.stateHolders.StateHolder
+import com.example.movie.core.util.UIStateHolder
+import com.example.movie.domain.model.Movie
 import com.example.movies.R
 import kotlinx.coroutines.launch
 
@@ -54,12 +52,12 @@ fun MovieDetailsScreen(
 
     Box(Modifier.fillMaxSize()) {
         when(movie){
-            is StateHolder.Loading -> LoaderComponent()
-            is StateHolder.Success -> {
-                (movie as StateHolder.Success<Movie>).data?.let { MovieItem(it) }
+            is UIStateHolder.Loading -> LoaderComponent()
+            is UIStateHolder.Success -> {
+                (movie as UIStateHolder.Success<Movie>).data?.let { MovieItem(it) }
             }
-            is StateHolder.Error -> {
-                Text(text = (movie as StateHolder.Error<Movie>).error ?: "Error")
+            is UIStateHolder.Error -> {
+                Text(text = (movie as UIStateHolder.Error<Movie>).error ?: "Error")
             }
         }
     }

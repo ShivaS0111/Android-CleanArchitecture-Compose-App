@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.example.movie.domain.datasource.local.entities.Movie
 import com.example.movie.ui.components.LoaderComponent
 import com.example.movie.ui.components.MovieItem
 import com.example.movie.ui.navigation.Navigate
-import com.example.movie.ui.stateHolders.StateHolder
+import com.example.movie.core.util.UIStateHolder
+import com.example.movie.domain.model.Movie
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -56,16 +56,19 @@ fun MovieListScreen(
 
         ) {
         when (result.value) {
-            is StateHolder.Loading -> LoaderComponent()
-            is StateHolder.Success, is StateHolder.Error -> {
-                if (result.value is StateHolder.Success) {
-                    MovieListScreenMainContent(result.value as StateHolder.Success<List<Movie>>, onClick =  { movie ->
-                        navHostController.navigate(Navigate.MovieDetails.route.plus("/${movie.id}"))
-                    }, onDeleteClick = {
-                        viewModel.onDeleteClick(it)
-                    })
+            is UIStateHolder.Loading -> LoaderComponent()
+            is UIStateHolder.Success, is UIStateHolder.Error -> {
+                if (result.value is UIStateHolder.Success) {
+                    MovieListScreenMainContent(
+                        result.value as UIStateHolder.Success<List<Movie>>,
+                        onClick = { movie ->
+                            navHostController.navigate(Navigate.MovieDetails.route.plus("/${movie.id}"))
+                        },
+                        onDeleteClick = {
+                            viewModel.onDeleteClick(it)
+                        })
                 } else {
-                    ShowErrorComponent(result.value as StateHolder.Error<List<Movie>>)
+                    ShowErrorComponent(result.value as UIStateHolder.Error<List<Movie>>)
                 }
                 PullRefreshIndicator(
                     refreshing = isRefreshing,
@@ -90,10 +93,12 @@ fun MovieListScreen(
 
 
 @Composable
-fun ShowErrorComponent(error: StateHolder.Error<List<Movie>>) {
+fun ShowErrorComponent(error: UIStateHolder.Error<List<Movie>>) {
     if (error.error?.isNotBlank() == true) {
         Box(
-            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("error"), contentAlignment = Alignment.Center
         ) {
             Text(text = error.error)
         }
@@ -103,7 +108,7 @@ fun ShowErrorComponent(error: StateHolder.Error<List<Movie>>) {
 
 @Composable
 fun MovieListScreenMainContent(
-    data: StateHolder.Success<List<Movie>>, onClick: (Movie) -> Unit,
+    data: UIStateHolder.Success<List<Movie>>, onClick: (Movie) -> Unit,
     onDeleteClick: ((movie: Movie) -> Unit)? = null
 ) {
     LazyVerticalStaggeredGrid(

@@ -1,7 +1,7 @@
 package com.example.movie.domain.repository
 
-import com.example.movie.domain.common.Result
-import com.example.movie.domain.datasource.local.entities.Movie
+import com.example.movie.core.util.Result
+import com.example.movie.domain.model.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {

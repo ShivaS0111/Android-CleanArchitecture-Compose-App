@@ -1,7 +1,8 @@
 package com.example.movie.ui.screens.details
 
-import com.example.movie.domain.common.Result
-import com.example.movie.domain.datasource.local.entities.Movie
+import com.example.movie.core.util.Result
+import com.example.movie.domain.model.Movie
+import com.example.movie.domain.usecases.GetMovieDetailsUseCase
 
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -17,11 +18,14 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
 
 @ExperimentalCoroutinesApi
 class MovieDetailsViewModelTest {
 
     private lateinit var viewModel: MovieDetailsViewModel
+
+    lateinit var useCase: GetMovieDetailsUseCase
 
     @After
     fun tearDown() {
@@ -31,15 +35,14 @@ class MovieDetailsViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(StandardTestDispatcher())
-        viewModel = MovieDetailsViewModel(
-            mockk()
-        )
+        useCase = mockk()
+        viewModel = MovieDetailsViewModel(useCase)
     }
 
     @Test
     fun `getMovie emits`() = runTest {
         val movie = Movie(id = 1, name = "Movie 1", image = null, language = null)
-        coEvery { viewModel.repository.getMovieDetails(1)} returns flow {
+        coEvery { useCase.invoke(movie.id!!)} returns flow {
             emit(Result.Success(movie))
         }
         viewModel.getMovie(1)
@@ -53,7 +56,7 @@ class MovieDetailsViewModelTest {
     fun `getMovie emits error states`() = runTest {
 
         val errorMessage = "Network error"
-        coEvery { viewModel.repository.getMovieDetails(1)} returns flow {
+        coEvery { useCase.invoke(1)} returns flow {
             emit(Result.Error(errorMessage))
         }
         viewModel.getMovie(1)

@@ -1,8 +1,9 @@
 package com.example.movie.data.datasource.network
 
-import com.example.movie.domain.common.Result
-import com.example.movie.domain.datasource.local.entities.Movie
-import com.example.movie.domain.datasource.network.ApiService
+import com.example.movie.core.util.Result
+import com.example.movie.data.datasource.network.apiclient.ApiService
+import com.example.movie.data.mapper.toEntity
+import com.example.movie.domain.model.Movie
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -29,7 +30,14 @@ class MoviesNetworkDataSourceImplTest {
 
     @Test
     fun `getTvShows should return success result when apiService returns data`() = runTest {
-        val movies = listOf(Movie(id = 1, name = "Movie 1", image = null, language = null))
+        val movies = listOf(
+            Movie(
+                id = 1,
+                name = "Movie 1",
+                image = null,
+                language = null
+            )
+        ).map { it.toEntity() }
         `when`(apiService.getTvShows()).thenReturn(Response.success(movies))
         val result = networkDataSource.getTvShows()
 

@@ -1,13 +1,12 @@
 package com.example.movie.data.datasource.network.apiclient
 
-import com.example.movie.domain.datasource.local.entities.Movie
-import com.example.movie.domain.datasource.network.ApiService
+import com.example.movie.data.datasource.local.entities.MovieEntity
 import retrofit2.Response
 import retrofit2.http.GET
 
-interface ApiServiceImpl : ApiService {
+interface ApiService {
 
     @GET("shows")
-    override suspend fun getTvShows(): Response<List<Movie>>
+    suspend fun getTvShows(): Response<List<MovieEntity>>
 
 }

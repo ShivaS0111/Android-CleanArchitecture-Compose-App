@@ -1,7 +1,6 @@
-package com.example.movie.di
+package com.example.movie.core.di
 
-import com.example.movie.data.datasource.network.apiclient.ApiServiceImpl
-import com.example.movie.domain.datasource.network.ApiService
+import com.example.movie.data.datasource.network.apiclient.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +35,6 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService =
-        retrofit.create(ApiServiceImpl::class.java)
+        retrofit.create(ApiService::class.java)
 
 }

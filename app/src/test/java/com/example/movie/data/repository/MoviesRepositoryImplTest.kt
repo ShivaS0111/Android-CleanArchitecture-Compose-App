@@ -1,9 +1,10 @@
 package com.example.movie.data.repository
 
-import com.example.movie.domain.common.Result
+import com.example.movie.core.util.Result
+import com.example.movie.data.mapper.toEntity
 import com.example.movie.domain.datasource.local.MoviesLocalDataSource
-import com.example.movie.domain.datasource.local.entities.Movie
-import com.example.movie.domain.datasource.network.datasource.MoviesNetworkDataSource
+import com.example.movie.domain.datasource.network.MoviesNetworkDataSource
+import com.example.movie.domain.model.Movie
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -39,13 +40,14 @@ class MoviesRepositoryImplTest {
 
         val result = repository.getTvShows().first()
 
+        println("===>res: $result, ${result.data}  ${result.message}  ")
         assertTrue(result is Result.Success && result.data?.isEmpty() == true)
     }
 
     @Test
     fun `getMovieDetails should emit success when movie exists in local data`() = runTest {
         val movie = Movie(id = 1, name = "Movie 1", image = null, language = null)
-        `when`(localDataSource.getMovieById(1)).thenReturn(flowOf(movie))
+        `when`(localDataSource.getMovieById(1)).thenReturn(flowOf(movie.toEntity()))
 
         val result = repository.getMovieDetails(1).first()
 
@@ -64,7 +66,7 @@ class MoviesRepositoryImplTest {
     @Test
     fun `deleteMovie should emit success when movie is successfully deleted`() = runTest {
         val movie = Movie(id = 1, name = "Movie 1", image = null, language = null)
-        `when`(localDataSource.getMovieDeleteById(movie)).thenReturn(1)
+        `when`(localDataSource.getMovieDeleteById(movie.toEntity())).thenReturn(1)
         val result = repository.deleteMovie(movie).first()
 
         println("===>res: $result, ${result.data}")
@@ -74,7 +76,7 @@ class MoviesRepositoryImplTest {
     @Test
     fun `deleteMovie should emit error when movie deletion fails`() = runTest {
         val movie = Movie(id = 1, name = "Movie 1", image = null, language = null)
-        `when`(localDataSource.getMovieDeleteById(movie)).thenReturn(0)
+        `when`(localDataSource.getMovieDeleteById(movie.toEntity())).thenReturn(0)
 
         val result = repository.deleteMovie(movie).first()
 

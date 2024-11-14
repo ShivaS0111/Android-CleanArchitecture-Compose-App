@@ -1,11 +1,10 @@
-package com.example.movie.domain.datasource.network.datasource
+package com.example.movie.core.util
 
 import android.accounts.NetworkErrorException
-import com.example.movie.domain.common.Result
 import retrofit2.Response
 
 interface  BaseNetworkDataSource {
-    suspend fun <T> getResult(call: suspend ()-> Response<T>): com.example.movie.domain.common.Result<T> {
+    suspend fun <T> getResult(call: suspend ()-> Response<T>): Result<T> {
         return try {
             val response = call()
             if (response.isSuccessful) {

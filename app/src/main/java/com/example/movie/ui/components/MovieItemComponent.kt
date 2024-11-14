@@ -33,7 +33,7 @@ import coil.compose.AsyncImagePainter
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
-import com.example.movie.domain.datasource.local.entities.Movie
+import com.example.movie.domain.model.Movie
 import com.example.movies.R
 
 @Composable
@@ -48,7 +48,7 @@ fun MovieItem(
             containerColor = Color.White,
         ),
         modifier = Modifier
-            .wrapContentSize(),
+            .wrapContentSize().testTag("movie"),
         onClick = {
             onClick.invoke(movie)
         }
@@ -70,7 +70,7 @@ fun MovieItem(
                             .wrapContentHeight()
                             .aspectRatio(matchHeightConstraintsFirst = false, ratio = 0.68f)
                             .testTag(movie.id?.toString() ?: "movieId")
-                            .testTag("Movie")
+                            .testTag("MovieImage")
                             .then((painter as? AsyncImagePainter)?.let { it.state as? AsyncImagePainter.State.Success }?.painter?.intrinsicSize?.let { intrinsicSize ->
                                 Modifier.aspectRatio(intrinsicSize.width / intrinsicSize.height)
                             } ?: Modifier),

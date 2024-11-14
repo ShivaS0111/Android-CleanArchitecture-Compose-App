@@ -1,7 +1,9 @@
 package com.example.movie.ui.screens.list
 
-import com.example.movie.domain.common.Result
-import com.example.movie.domain.datasource.local.entities.Movie
+import com.example.movie.core.util.Result
+import com.example.movie.domain.model.Movie
+import com.example.movie.domain.usecases.DeleteMovieUseCase
+import com.example.movie.domain.usecases.GetMoviesUseCase
 
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -17,11 +19,15 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
 
 @ExperimentalCoroutinesApi
 class MovieListViewModelTest {
 
     private lateinit var viewModel: MovieListViewModel
+
+    private lateinit var getMoviesUseCase: GetMoviesUseCase
+    private lateinit var deleteMovieUseCase: DeleteMovieUseCase
 
     private val data: List<Movie> by lazy {
         arrayListOf(
@@ -39,14 +45,14 @@ class MovieListViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(StandardTestDispatcher())
-        viewModel = MovieListViewModel(
-            mockk()
-        )
+        getMoviesUseCase = mockk()
+        deleteMovieUseCase = mockk()
+        viewModel = MovieListViewModel( getMoviesUseCase, deleteMovieUseCase)
     }
 
     @Test
     fun `getAllTvShows emits`() = runTest {
-        coEvery { viewModel.repository.getTvShows()} returns flow {
+        coEvery { getMoviesUseCase.invoke() } returns flow {
             emit(Result.Success(data))
         }
         viewModel.getAllTvShows()
@@ -60,7 +66,7 @@ class MovieListViewModelTest {
     fun `getAllTvShows emits error states`() = runTest {
 
         val errorMessage = "Network error"
-        coEvery { viewModel.repository.getTvShows()} returns flow {
+        coEvery { getMoviesUseCase.invoke() } returns flow {
             emit(Result.Error(errorMessage))
         }
 

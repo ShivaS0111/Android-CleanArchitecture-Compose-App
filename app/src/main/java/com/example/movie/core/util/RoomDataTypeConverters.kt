@@ -1,4 +1,4 @@
-package com.example.movie.domain.datasource.local.util
+package com.example.movie.core.util
 
 import androidx.room.TypeConverter
 import com.example.movie.domain.model.ImageData

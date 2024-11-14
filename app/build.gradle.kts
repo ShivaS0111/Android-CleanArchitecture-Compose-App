@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
+    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
 
@@ -16,8 +16,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        //testInstrumentationRunner = "com.example.test_movie_app.HiltTestRunner"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
 
 
         vectorDrawables {
@@ -25,7 +25,7 @@ android {
         }
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments ["room.schemaLocation"] = "$projectDir/schemas"
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
             }
         }
     }
@@ -62,6 +62,14 @@ android {
             //includeAndroidResources = true
         }
     }
+
+    packagingOptions {
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/NOTICE.md")
+        exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/LICENSE-notice.md")
+    }
 }
 
 dependencies {
@@ -75,15 +83,15 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.paging:paging-common-ktx:3.3.0")
-    implementation ("androidx.compose.material:material:1.6.8")
+    implementation("androidx.compose.material:material:1.6.8")
 
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-   // implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    // implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
@@ -104,7 +112,7 @@ dependencies {
 
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.compose.ui:ui-test-junit4-android:1.7.5")
-    kapt ("com.google.dagger:hilt-compiler:2.51.1")
+    kapt("com.google.dagger:hilt-compiler:2.51.1")
     //coil
     implementation("io.coil-kt:coil-compose:2.4.0")
 
@@ -112,18 +120,11 @@ dependencies {
     val nav_version = "2.7.7"
     api("androidx.navigation:navigation-fragment-ktx:$nav_version")
 
-    val colorPicker = "0.7.0"
-    implementation ("com.godaddy.android.colorpicker:compose-color-picker:$colorPicker")
-
-// with Android ColorInt extensions
-    implementation ("com.godaddy.android.colorpicker:compose-color-picker-android:$colorPicker")
-// desktop jvm version
-    //implementation ("com.godaddy.android.colorpicker:compose-color-picker-jvm:$colorPicker")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation( "com.google.dagger:hilt-android-testing:2.51.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.51.1")
 
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.06.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
@@ -131,23 +132,23 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.8")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.8")
 
-    testImplementation( "org.mockito:mockito-core:5.8.0")
+    testImplementation("org.mockito:mockito-core:5.8.0")
 
-    implementation ("com.google.dagger:hilt-android:2.51.1")
-    kaptAndroidTest ("com.google.dagger:hilt-android-compiler:2.51.1")
-    androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.51.1")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
 
-    testImplementation( "androidx.arch.core:core-testing:2.2.0")
-    testImplementation( "io.mockk:mockk:1.13.2")
-    testImplementation ("app.cash.turbine:turbine:1.0.0")
-    testImplementation ("androidx.test:runner:1.6.1")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
+    testImplementation("androidx.test:runner:1.6.2")
 
     // Other testing dependencies
-    testImplementation ("junit:junit:4.13.2")
+    testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.8.0")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0-RC")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0-RC")
 
-    testImplementation ("org.mockito:mockito-core:5.8.0")
+    testImplementation("org.mockito:mockito-core:5.8.0")
 
     // For Robolectric tests.
     //testImplementation ("org.robolectric:robolectric:4.6.1") // Required if you need Robolectric for resource tests
@@ -165,13 +166,18 @@ dependencies {
     val room_version = "2.6.1"
 
     api("androidx.room:room-runtime:$room_version")
-    api( "androidx.room:room-ktx:2.6.1")
+    api("androidx.room:room-ktx:2.6.1")
 
     annotationProcessor("androidx.room:room-compiler:$room_version")
 
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
     //room testing
-    androidTestImplementation ("androidx.room:room-testing:$room_version")
+    androidTestImplementation("androidx.room:room-testing:$room_version")
+
+    androidTestImplementation("androidx.navigation:navigation-testing:2.8.4")
+
+    androidTestImplementation("io.mockk:mockk-android:1.13.5")  // Add this for mocking in instrumentation tests
+
 
 }

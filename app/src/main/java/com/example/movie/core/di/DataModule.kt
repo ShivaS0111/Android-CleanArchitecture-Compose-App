@@ -1,13 +1,16 @@
-package com.example.movie.di
+package com.example.movie.core.di
 
 import com.example.movie.data.datasource.local.MoviesLocalDataSourceImpl
 import com.example.movie.data.datasource.network.MoviesNetworkDataSourceImpl
 import com.example.movie.data.repository.MoviesRepositoryImpl
 import com.example.movie.domain.datasource.local.MoviesLocalDataSource
-import com.example.movie.domain.datasource.local.dao.MovieDAO
-import com.example.movie.domain.datasource.network.ApiService
-import com.example.movie.domain.datasource.network.datasource.MoviesNetworkDataSource
+import com.example.movie.data.datasource.local.dao.MovieDAO
+import com.example.movie.data.datasource.network.apiclient.ApiService
+import com.example.movie.domain.datasource.network.MoviesNetworkDataSource
 import com.example.movie.domain.repository.MoviesRepository
+import com.example.movie.domain.usecases.DeleteMovieUseCase
+import com.example.movie.domain.usecases.GetMovieDetailsUseCase
+import com.example.movie.domain.usecases.GetMoviesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,5 +33,21 @@ object DataModule {
         network: MoviesNetworkDataSource,
         local: MoviesLocalDataSource
     ): MoviesRepository = MoviesRepositoryImpl(network, local)
+
+
+    @Provides
+    fun provideGetMoviesUseCase(
+        repository: MoviesRepository,
+    ): GetMoviesUseCase = GetMoviesUseCase(repository)
+
+    @Provides
+    fun provideGetMovieDetailsUseCase(
+        repository: MoviesRepository,
+    ): GetMovieDetailsUseCase = GetMovieDetailsUseCase(repository)
+
+    @Provides
+    fun provideDeleteMovieUseCase(
+        repository: MoviesRepository,
+    ): DeleteMovieUseCase = DeleteMovieUseCase(repository)
 
 }

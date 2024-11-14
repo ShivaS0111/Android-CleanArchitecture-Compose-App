@@ -1,17 +1,17 @@
 package com.example.movie.domain.datasource.local
 
-import com.example.movie.domain.datasource.local.dao.MovieDAO
-import com.example.movie.domain.datasource.local.entities.Movie
+import com.example.movie.data.datasource.local.dao.MovieDAO
+import com.example.movie.data.datasource.local.entities.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesLocalDataSource {
     var dao: MovieDAO
 
-    suspend fun insert(movies: List<Movie>)
+    suspend fun insert(movies: List<MovieEntity>)
 
-    fun getAllMovies(): Flow<List<Movie>>
+    fun getAllMovies(): Flow<List<MovieEntity>>
 
-    fun getMovieById(id: Int): Flow<Movie>
+    fun getMovieById(id: Int): Flow<MovieEntity>
 
-    suspend fun getMovieDeleteById(movie: Movie):Int
+    suspend fun getMovieDeleteById(movie: MovieEntity):Int
 }

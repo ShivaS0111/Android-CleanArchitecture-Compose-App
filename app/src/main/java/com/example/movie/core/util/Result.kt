@@ -1,4 +1,4 @@
-package com.example.movie.domain.common
+package com.example.movie.core.util
 
 sealed class Result<T>(val data:T?=null, val message: String?=null){
 
