@@ -5,7 +5,6 @@ import com.example.movie.data.datasource.local.entities.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesLocalDataSource {
-    var dao: MovieDAO
 
     suspend fun insert(movies: List<MovieEntity>)
 

@@ -6,7 +6,7 @@ import com.example.movie.data.datasource.local.entities.MovieEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MoviesLocalDataSourceImpl @Inject constructor(override var dao: MovieDAO) :
+class MoviesLocalDataSourceImpl @Inject constructor( var dao: MovieDAO) :
     MoviesLocalDataSource {
 
     override suspend fun insert(movies: List<MovieEntity>) = dao.insert(movies)
